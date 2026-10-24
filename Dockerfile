@@ -11,9 +11,11 @@ RUN rm -rf /usr/local/tomcat/webapps/ROOT \
 # 将你的 war 文件复制到 Tomcat 的 webapps 目录下
 COPY attendance.war /usr/local/tomcat/webapps/
 
-# 将启动脚本复制到镜像中，并赋予可执行权限
+# 将启动脚本复制到镜像中
 COPY entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# 修复 Windows 的换行符问题，并赋予执行权限
+RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh && chmod +x /usr/local/bin/entrypoint.sh
 
 # 暴露 8080 端口
 EXPOSE 8080
