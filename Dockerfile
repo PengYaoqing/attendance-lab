@@ -11,13 +11,15 @@ RUN rm -rf /usr/local/tomcat/webapps/ROOT \
 # 将 war 文件复制到 Tomcat 的 webapps 目录下
 COPY attendance.war /usr/local/tomcat/webapps/
 
-# 将启动脚本复制到镜像中
+# 将启动脚本和日志配置复制到镜像中
 COPY entrypoint.sh /usr/local/bin/
+# 【新增】：用只输出到控制台的配置，覆盖掉默认写文件的配置
+COPY logging.properties /usr/local/tomcat/conf/logging.properties
 
-# 修复 Windows 的换行符问题，并赋予执行权限
+# 修复脚本换行符并赋予执行权限
 RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh && chmod +x /usr/local/bin/entrypoint.sh
 
-# 【新增】：创建可写的 logs 和 temp 目录，并赋予权限
+# 创建可写的临时目录和日志目录（防止 Tomcat 尝试写系统根目录）
 RUN mkdir -p /usr/local/tomcat/writable-logs /usr/local/tomcat/writable-temp && \
     chmod -R 777 /usr/local/tomcat/writable-logs /usr/local/tomcat/writable-temp
 
