@@ -1,6 +1,7 @@
 #!/bin/bash
 ln -sf /usr/local/tomcat/writable-logs /usr/local/tomcat/logs
 ln -sf /usr/local/tomcat/writable-temp /usr/local/tomcat/temp
+ln -sf /usr/local/tomcat/writable-work /usr/local/tomcat/work
 
 # 替换端口
 if [ -n "$PORT" ] && [ "$PORT" != "8080" ]; then
